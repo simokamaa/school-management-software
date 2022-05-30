@@ -6,14 +6,8 @@
         float: right;
     }
     #message_div{ 
-        padding: 6px 10px 6px 10px;
+        padding: 10px 10px 10px 10px;
         margin-bottom: 10px;
-        margin-top: 20px;
-        background: #01b5ef;
-        font-weight: bold;
-        text-align: left;
-        border-radius: 5px;
-        color: #fff;
     }
 </style>
 

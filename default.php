@@ -7,48 +7,52 @@
         <meta charset="ISO-8859-15">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="cache-control" content="no-store" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="pragma" content="no-store" />
+        
 
-        <title><?php echo $title_for_layout; ?></title>   
+        <title><?php echo $title_for_layout; ?></title>
         <?php if($this->global_setting->favicon_icon){ ?>
             <link rel="icon" href="<?php echo UPLOAD_PATH; ?>/logo/<?php echo $this->global_setting->favicon_icon; ?>" type="image/x-icon" />             
         <?php }else{ ?>
             <link rel="icon" href="<?php echo IMG_URL; ?>favicon.ico" type="image/x-icon" />
         <?php } ?>
         
-        <!-- CSS -->
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/bootstrap.min.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/jquery-ui.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/fontawesome-all.min.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/owl.carousel.min.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/animate.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/meanmenu.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/jquery.fancybox.min.css">
         
-        <?php if(isset($school->theme_name)){ ?>
-            <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/theme/<?php echo $school->theme_name; ?>.css">
-        <?php }else{ ?>
-            <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/style.css">
-        <?php } ?>  
+        <!-- Bootstrap -->
+        <link href="<?php echo VENDOR_URL; ?>bootstrap/bootstrap.min.css" rel="stylesheet">
         
-        <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/responsive.css">
-        
-        <?php if($school->enable_rtl){ ?>
-            <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/rtl.css">
+        <!-- Font Awesome -->
+        <link href="<?php echo VENDOR_URL; ?>font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    
+        <!-- Custom Theme Style -->
+        <?php if($this->school_setting->enable_rtl){ ?>
+            <link href="<?php echo CSS_URL; ?>rtl/custom-rtl.css" rel="stylesheet">             
         <?php }elseif($this->global_setting->enable_rtl){ ?>
-            <link rel="stylesheet" href="<?php echo CSS_URL; ?>front/rtl.css">
+            <link href="<?php echo CSS_URL; ?>rtl/custom-rtl.css" rel="stylesheet">             
+        <?php }else{ ?>
+            <link href="<?php echo CSS_URL; ?>custom.css" rel="stylesheet">
         <?php } ?>
-         
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
         
-        <script src="<?php echo JS_URL; ?>front/jquery-3.3.1.min.js"></script>
+        <?php if($this->session->userdata('theme')){ ?>
+            <link href="<?php echo CSS_URL; ?>theme/<?php echo $this->session->userdata('theme'); ?>.css" rel="stylesheet">
+        <?php }else{ ?>
+            <link href="<?php echo CSS_URL; ?>theme/jazzberry-jam.css" rel="stylesheet">
+        <?php } ?>
+        
+        <!-- jQuery -->
+        <script src="<?php echo JS_URL; ?>jquery-1.11.2.min.js"></script>
         <script src="<?php echo JS_URL; ?>jquery.validate.js"></script>
         
-        <?php if(isset($this->global_setting->google_analytics) && !empty($this->global_setting->google_analytics)){ ?>         
+         <script type="text/javascript" src="<?php echo VENDOR_URL; ?>toastr/toastr.min.js"></script>
+        
+        <?php if($this->global_setting->google_analytics){ ?>         
             <!-- Global site tag (gtag.js) - Google Analytics -->
             <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $this->global_setting->google_analytics; ?>"></script>
             <script>
@@ -58,38 +62,59 @@
               gtag('config', '<?php echo $this->global_setting->google_analytics; ?>');
             </script>
         <?php } ?>
-           
+        
     </head>
 
-    <body>
-        <div id="preloader"></div>
+    <body class="nav-md">
+        <div id="preloader"></div>    
+        <div class="container body">
+            <div class="main_container">
+                 <?php $this->load->view('layout/left-side'); ?>   
+                <!-- top navigation -->
+                 <?php $this->load->view('layout/header'); ?>   
+                <!-- /top navigation -->
+                
+                <div class="<?php echo $this->enable_rtl ? 'left_col' : 'right_col'; ?>" role="main" >                  
+                    <?php $this->load->view('layout/message'); ?>
+                    <!-- page content -->
+                    <?php echo $content_for_layout; ?>
+                    <!-- /page content -->
+                </div>
+                <!-- footer content -->
+                <?php $this->load->view('layout/footer'); ?>   
+                <!-- /footer content -->
+            </div>
+        </div>
         
-        <?php $this->load->view('layout/header'); ?>  
+        <!-- Bootstrap -->
+        <script src="<?php echo VENDOR_URL; ?>bootstrap/bootstrap.min.js"></script>    
         
-        <!-- page content -->        
-        <?php echo $content_for_layout; ?>
-        <!-- /page content -->
+        <!--   Start   -->   
+        <link href="<?php echo VENDOR_URL; ?>datatables/rowReorder/rowReorder.dataTables.min.css" rel="stylesheet">
+        <link href="<?php echo VENDOR_URL; ?>datatables/rowReorder/responsive.dataTables.min.css" rel="stylesheet">
         
-        <!-- footer content -->
-        <?php $this->load->view('layout/footer'); ?>   
-        <!-- /footer content -->
-
-
-        <!-- Scripts -->      
-        <script src="<?php echo JS_URL; ?>front/jquery-ui.js"></script>
-        <script src="<?php echo JS_URL; ?>front/owl.carousel.min.js"></script>
-        <script src="<?php echo JS_URL; ?>front/jquery.counterup.min.js"></script>
-        <script src="<?php echo JS_URL; ?>front/jquery.meanmenu.js"></script>
-        <script src="<?php echo JS_URL; ?>front/jquery.fancybox.min.js"></script>
-        <script src="<?php echo JS_URL; ?>front/jquery.scrollUp.js"></script>
-        <script src="<?php echo JS_URL; ?>front/jquery.waypoints.min.js"></script>
-<!--        <script src="<?php echo JS_URL; ?>front/popper.min.js"></script>-->
-        <script src="<?php echo JS_URL; ?>front/bootstrap.min.js"></script>
-        <script src="<?php echo JS_URL; ?>front/theme.js"></script> 
-
-        <script type="text/javascript">
-
-            jQuery.extend(jQuery.validator.messages, {
+        <link href="<?php echo VENDOR_URL; ?>datatables/buttons.dataTables.min.css" rel="stylesheet"> 
+        <link href="<?php echo VENDOR_URL; ?>datatables/dataTables.bootstrap.css" rel="stylesheet"> 
+        <script src="<?php echo VENDOR_URL; ?>datatables/tools/jquery.dataTables.min.js"></script>
+        <script src="<?php echo VENDOR_URL; ?>datatables/tools/dataTables.buttons.min.js"></script>
+        <script src="<?php echo VENDOR_URL; ?>datatables/tools/pdfmake.min.js"></script>
+        <script src="<?php echo VENDOR_URL; ?>datatables/tools/jszip.min.js"></script>
+        <script src="<?php echo VENDOR_URL; ?>datatables/tools/vfs_fonts.js"></script>
+        <script src="<?php echo VENDOR_URL; ?>datatables/tools/buttons.html5.min.js"></script> 
+        <script src="<?php echo VENDOR_URL; ?>datatables/dataTables.bootstrap.js"></script> 
+        
+        <script src="<?php echo VENDOR_URL; ?>datatables/rowReorder/dataTables.rowReorder.min.js"></script> 
+        <script src="<?php echo VENDOR_URL; ?>datatables/rowReorder/dataTables.responsive.min.js"></script> 
+    
+       <!-- dataTable with buttons end -->       
+        <link href="<?php echo VENDOR_URL; ?>toastr/toastr.min.css" rel="stylesheet">
+       <!-- Custom Theme Scripts -->       
+           
+       <script src="<?php echo JS_URL; ?>custom.js"></script>  
+       
+       <script type="text/javascript">
+       
+       jQuery.extend(jQuery.validator.messages, {
                 required: "<?php echo $this->lang->line('required_field'); ?>",
                 email: "<?php echo $this->lang->line('enter_valid_email'); ?>",
                 url: "<?php echo $this->lang->line('enter_valid_url'); ?>",
@@ -102,17 +127,31 @@
                 maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
                 minlength: jQuery.validator.format("Please enter at least {0} characters."),
                 rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
-                range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+                 range: jQuery.validator.format("Please enter a value between {0} and {1}."),
                 max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
                 min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
             });
             
-            
-             function change_school(url){
-                if(url){
-                    window.location.href = url; 
-                }
-            }           
-        </script>
-    </body>
+            toastr.options = {
+                "closeButton": true,               
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "300",
+                "timeOut": "3000",              
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+
+
+        $(window).on('load', function() {
+            $('#preloader').fadeOut('slow', function() { $(this).remove(); });
+        });
+  
+       </script>
+
+</body>
 </html>
